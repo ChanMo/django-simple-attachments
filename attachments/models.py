@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.html import format_html
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from sorl.thumbnail import get_thumbnail
+#from sorl.thumbnail import get_thumbnail
 from taggit.managers import TaggableManager
 
 class Attachment(models.Model):
@@ -23,7 +23,7 @@ class Attachment(models.Model):
     #     blank=True, null=True)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     updated = models.DateTimeField(_('updated'), auto_now=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         return self.name
@@ -47,7 +47,8 @@ class Attachment(models.Model):
 
     def show_thumbnail(self, size='300x300', crop='center', quality=99):
         try:
-            return get_thumbnail(self.source, size, crops=crop, quality=quality)
+            return self.source
+            #return get_thumbnail(self.source, size, crops=crop, quality=quality)
         except:
             return self.source
 

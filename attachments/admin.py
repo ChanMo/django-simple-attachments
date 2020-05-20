@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from .models import *
 
@@ -12,3 +13,4 @@ class AttachmentAdmin(admin.ModelAdmin):
 
     def show_tags(self, instance):
         return ','.join(i.name for i in instance.tags.all())
+    show_tags.short_description = '标签'
