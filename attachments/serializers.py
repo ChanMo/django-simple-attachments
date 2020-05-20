@@ -15,7 +15,5 @@ class AttachmentSerializer(ModelSerializer):
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         ret['source'] = instance.source.url
-        ret['small'] = instance.show_thumbnail('300x300').url
-        ret['medium'] = instance.show_thumbnail('800x800').url
 
         return ret
