@@ -1,0 +1,7 @@
+include LICENSE
+include README.md
+recursive-include attachments/static *
+recursive-include attachments/templates *
+recursive-include attachments/locale *
+recursive-include attachments/components *
+include attachments/migrations/__init__.py

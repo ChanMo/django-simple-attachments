@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="django-simple-attachments",
-    version="0.1.1",
+    version="0.1.2",
     author="ChanMo",
     author_email="chan.mo@outlook.com",
     description="Django Simple Attachment Model",
