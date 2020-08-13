@@ -38,7 +38,7 @@ class Attachment(models.Model):
 
     def show_image(self):
         return format_html(
-            "<img src='{}?width=64&height=64' />",
+            "<img src='{}?width=64&height=64' height='64' />",
             self.source.url
         )
 
