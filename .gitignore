@@ -134,3 +134,6 @@ yarn-error.log*
 .DS_Store
 .env.local
 .env.*.local
+
+/demo/data/
+/demo/backend/media/

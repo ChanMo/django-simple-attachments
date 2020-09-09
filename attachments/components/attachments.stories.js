@@ -5,6 +5,10 @@ import UploadBox from './upload_box'
 import ImageGrid from './image_grid'
 import PickerBox from './picker_box'
 import SortableGrid from './sortable_grid'
+import TagsBar from './tags_bar.js'
+import SearchBar from './search_bar.js'
+import ImageInfo from './image_info.js'
+import ImageBox from './image_box.js'
 
 export default { title: 'Attachments' }
 
@@ -33,4 +37,66 @@ export const imageGrid = () => (
   <ImageGrid />
 )
 
+export const searchBar = () => (
+  <SearchBar />
+)
 
+export const tagsBar = () => (
+  <TagsBar />
+)
+
+const img = {
+      "id": 9,
+      "source": "/media/attachments/f5c3c700-1255-4882-afb4-d72d73fe1550.jpg",
+      "name": "hello.jpg",
+      "size": 102071,
+      "width": 640,
+      "height": 797,
+      "ftype": null,
+      "description": "",
+      "is_active": true,
+      "created": "2020/09/08 09:38:05",
+      "updated": "2020/09/09 01:03:44"
+
+}
+
+export const imageInfo = () => (
+  <ImageInfo img={{
+      "id": 9,
+      "source": "/media/attachments/f5c3c700-1255-4882-afb4-d72d73fe1550.jpg",
+      "name": "hello.jpg",
+      "size": 102071,
+      "width": 640,
+      "height": 797,
+      "ftype": null,
+      "description": "",
+      "is_active": true,
+      "created": "2020/09/08 09:38:05",
+      "updated": "2020/09/09 01:03:44"
+  }} />
+)
+
+export const imageBox = () => (
+  <div style={{display:'flex'}}>
+    <ImageBox
+      image={img}
+      onChoice={()=>null}
+    />
+    <ImageBox
+      image={img}
+      active
+      onChoice={()=>null}
+    />
+    <ImageBox
+      image={img}
+      selected
+      onChoice={()=>null}
+    />
+    <ImageBox
+      image={img}
+      active
+      selected
+      onChoice={()=>null}
+    />
+  </div>
+)

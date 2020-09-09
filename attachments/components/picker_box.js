@@ -24,7 +24,7 @@ const TabPanel = (props) => {
       id={`image-picker-tab${index}`}
       {...other}
     >
-      {value === index && <Box p={2}>{children}</Box>}
+      {value === index && <Box p={2} style={{height:'100%',overflowY:'hidden'}}>{children}</Box>}
     </Typography>
   );
 }
@@ -36,7 +36,7 @@ TabPanel.propTypes = {
 };
 
 
-const PickerBox = ({open, onSubmit, onClose, tmp=[], onChoice, multiple=false}) => {
+const PickerBox = ({open, onSubmit, onClose, tmp='', onChoice, multiple=false}) => {
   const [mode, setMode] = useState(0)
 
   return (
@@ -46,14 +46,14 @@ const PickerBox = ({open, onSubmit, onClose, tmp=[], onChoice, multiple=false}) 
       onClose={onClose}
     >
       <DialogTitle>选择图片</DialogTitle>
-      <DialogContent>
+      <DialogContent style={{display:'flex',flexDirection:'column',overflowY:'hidden'}}>
         <Tabs
           value={mode}
           onChange={(event, value)=>setMode(value)}>
           <Tab label="选择" id="image-picker-tab0"></Tab>
           <Tab label="上传" id="image-picker-tab1"></Tab>
         </Tabs>
-        <TabPanel value={mode} index={0}>
+        <TabPanel value={mode} index={0} style={{flex:1,overflowY:'hidden'}}>
           <ImageGrid values={tmp} onChoice={onChoice} />
         </TabPanel>
         <TabPanel value={mode} index={1}>

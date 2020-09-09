@@ -2,8 +2,9 @@ import logging
 from django.core.files.images import ImageFile
 from django.http import HttpResponse, HttpResponseNotFound
 
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.mixins import CreateModelMixin
+from rest_framework.decorators import api_view
 
 from attachments.models import Attachment
 from sorl.thumbnail import get_thumbnail
@@ -14,16 +15,31 @@ from .serializers import *
 
 logger = logging.getLogger(__name__)
 
-class AttachmentViewSet(CreateModelMixin, ReadOnlyModelViewSet):
+class AttachmentViewSet(ModelViewSet):
     queryset = Attachment.objects.all()
     serializer_class = AttachmentSerializer
 
     def get_queryset(self):
+        from django.db.models import Q
         qs = super().get_queryset()
         search = self.request.GET.get('search', None)
         if search:
-            qs = qs.filter(tags__name=search)
+            qs = qs.filter(Q(tags__name=search) | Q(name__contains=search)).order_by('-id').distinct('id')
         return qs
+
+
+@api_view(['GET'])
+def tags_view(request):
+    """
+    热门标签
+    """
+    from django.contrib.contenttypes.models import ContentType
+    from taggit.models import TaggedItem
+    from django.db.models import Count
+    from rest_framework.response import Response
+    content_type = ContentType.objects.get_for_model(Attachment)
+    tags = TaggedItem.objects.filter(content_type=content_type).values('tag__name').annotate(Count('tag__name')).order_by('-tag__name__count')
+    return Response(tags)
 
 
 def media_view(request, path):

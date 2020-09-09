@@ -16,15 +16,22 @@ const useStyles = makeStyles(theme => ({
 const ImagePicker = (props) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [tmp, setTmp] = useState(null)
   const [value, setValue] = useState(props.value ? props.value : '')
   const [mode, setMode] = useState(0)
 
   const handleChoice = (value) => {
-    setOpen(false)
-    setValue(value)
+    //setOpen(false)
+    //setValue(value)
+    setTmp(value)
   }
 
   const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handleSubmit = () => {
+    setValue(tmp)
     setOpen(false)
   }
 
@@ -48,8 +55,9 @@ const ImagePicker = (props) => {
       <PickerBox
         open={open}
         onClose={handleClose}
-        onSubmit={handleClose}
+        onSubmit={handleSubmit}
         onChoice={handleChoice}
+        tmp={tmp}
       />
     </React.Fragment>
   )

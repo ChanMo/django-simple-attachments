@@ -2,28 +2,56 @@ import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import TablePagination from '@material-ui/core/TablePagination'
-import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardMedia from '@material-ui/core/CardMedia'
+import { makeStyles } from '@material-ui/core/styles'
+import SearchBar from './search_bar.js'
+import TagsBar from './tags_bar.js'
+import ImageInfo from './image_info.js'
+import ImageBox from './image_box.js'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flex: 1,
+    display: 'flex',
+    overflowY: 'hidden',
+    height: '100%'
+  },
+  grid: {
+    flex: 1,
+    overflowY: 'auto',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignContent: 'flex-start',
+  },
+  item: {
+    padding: theme.spacing(1/2)
+  },
+  main: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    overflowY: 'hidden',
+  },
+  info: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+    width: 320,
+    maxWidth: 320,
+    height: '100%',
+    overflowY: 'auto',
+  }
+}))
 
 const host = process.env.STORYBOOK ? process.env.API : ''
 
-export const ImageBox = ({image, onChoice, selected=false}) => (
-  <Card>
-    <CardActionArea onClick={()=>onChoice(image.source)}>
-      <CardMedia
-        style={selected ? {height:150, border:'4px solid #00b894',boxSizing:'border-box'} : {height:150}}
-        image={`${host}${image.source}?width=150&height=150`}
-        title={image.name}
-      />
-    </CardActionArea>
-  </Card>
-)
-
-const ImageGrid = ({onChoice, values=[]}) => {
+const ImageGrid = ({onChoice, values=''}) => {
+  const classes = useStyles()
   const [data, setData] = useState({count:0, results:[]})
+  const [active, setActive] = useState({})
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
-  const limit = 48
+  const limit = 50
 
   useEffect(()=>{
     const fetchData = async() => {
@@ -37,7 +65,7 @@ const ImageGrid = ({onChoice, values=[]}) => {
             }
           }
         }
-        const res = await fetch(`${host}/api/attachments/?limit=${limit}&offset=${offset}`, options)
+        const res = await fetch(`${host}/api/attachments/?limit=${limit}&offset=${offset}&search=${search}`, options)
         const resJson = await res.json()
         setData(resJson)
       } catch {
@@ -45,38 +73,68 @@ const ImageGrid = ({onChoice, values=[]}) => {
       }
     }
     fetchData()
-  }, [page])
+  }, [page, search])
 
-  if(!data.count) {
-    return <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      height={400}
-    >空</Box>
+  const handleChoice = (img) => {
+    setActive(img)
+    onChoice(img.source)
+  }
+
+  // 判断是否选中状态
+  const checkSelected = (src) => {
+    if(typeof(values) === 'object' && values !== null) {
+      return values.indexOf(src) > -1
+    }
+    return false
   }
 
   return (
-    <React.Fragment>
-    <Grid container spacing={1}>
-      {data.results.map(row => (
-      <Grid key={row.id} item xs={4} sm={3} md={2} lg={1}>
-        <ImageBox
-          selected={values.indexOf(row.source) > -1}
-          image={row}
-          onChoice={onChoice} />
-      </Grid>
-      ))}
-    </Grid>
-    <TablePagination
-      rowsPerPageOptions={[12]}
-      component='div'
-      count={data.count}
-      rowsPerPage={limit}
-      page={page}
-      onChangePage={(event, value)=>setPage(value)}
-    />
-  </React.Fragment>
+      <div className={classes.root}>
+        <div className={classes.main}>
+          <SearchBar
+            value={search}
+            onSubmit={(value)=>setSearch(value)}
+          />
+          <TagsBar
+            onSubmit={(value)=>setSearch(value)}
+          />
+          {data.count ? (
+            <>
+              <div className={classes.grid}>
+                {data.results.map(row => (
+                  <div
+                    className={classes.item}
+                    key={row.id}>
+                  <ImageBox
+                    selected={checkSelected(row.source)}
+                    active={active === row}
+                    image={row}
+                    onChoice={handleChoice} />
+                </div>
+                ))}
+              </div>
+              <TablePagination
+                rowsPerPageOptions={[12]}
+                component='div'
+                count={data.count}
+                rowsPerPage={limit}
+                page={page}
+                onChangePage={(event, value)=>setPage(value)}
+              />
+            </>
+          ) : (
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height={400}
+              >空</Box>
+          )}
+        </div>
+        <div className={classes.info}>
+          <ImageInfo img={active} />
+        </div>
+      </div>
   )
 }
 

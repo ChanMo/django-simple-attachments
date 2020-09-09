@@ -13,7 +13,8 @@ const host = process.env.STORYBOOK ? process.env.API : ''
 
 const useStyles = makeStyles({
   img: {
-    height:180,
+    width: 160,
+    height:160,
     display:'flex',
     flexDirection:'row-reverse',
     alignItems:'flex-start'
@@ -21,9 +22,9 @@ const useStyles = makeStyles({
 })
 
 const GridWraper = forwardRef((props, ref) => (
-  <Grid container ref={ref} spacing={2} style={{width:'100%',marginBottom:8}}>
+  <div container ref={ref} spacing={2} style={{display:'flex',flexWrap:'wrap',marginBottom:8}}>
     {props.children}
-  </Grid>
+  </div>
 ))
 
 const SortableGrid = ({images, onChange, onRemove}) => {
@@ -56,8 +57,8 @@ const SortableGrid = ({images, onChange, onRemove}) => {
       list={data}
       setList={handleChange}>
       {data.map(row => (
-        <Grid key={row.id} item xs={6} sm={4} md={3} lg={2}>
-          <Card>
+        <div key={row.id} item xs={6} sm={4} md={3} lg={2}>
+          <Card style={{marginRight:8,marginBottom:8}}>
           <CardMedia
             className={classes.img}
             image={image_url(row.value)}
@@ -68,7 +69,7 @@ const SortableGrid = ({images, onChange, onRemove}) => {
             </IconButton>
           </CardMedia>
         </Card>
-      </Grid>
+      </div>
     ))}
     </ReactSortable>
   )

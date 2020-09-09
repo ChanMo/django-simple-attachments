@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>{{flatpage.title}}</title>
+    <link href="https://cdn.bootcss.com/pure/1.0.1/pure-min.css" rel="stylesheet">
+<style>
+.container {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+h1 {
+  text-align: center;
+}
+</style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{flatpage.title|title}}</h1>
+      <div>{{flatpage.content|linebreaks}}</div>
+    </div>
+  </body>
+</html>

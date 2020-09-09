@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+    backend:
+        build: ./backend
+        volumes:
+            - ./backend:/app
+            - ../attachments:/app/attachments/
+        ports:
+            - "8000:8000"
+        depends_on:
+            - postgres
+        environment:
+            DEBUG: "true"
+        command: python manage.py runserver 0.0.0.0:8000
+
+    postgres:
+        image: postgres
+        volumes:
+            - ./db:/var/lib/postgresql/data/
+        environment:
+            POSTGRES_PASSWORD: "mdian1927"

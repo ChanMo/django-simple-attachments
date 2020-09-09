@@ -2,6 +2,7 @@ import React from 'react'
 import ButtonBase from '@material-ui/core/ButtonBase'
 import Typography from '@material-ui/core/Typography'
 import BackupIcon from '@material-ui/icons/Backup'
+import { getCookie } from './cookies.js'
 
 const host = process.env.STORYBOOK ? process.env.API : ''
 
@@ -17,7 +18,7 @@ const UploadBox = ({onChoice, multiple=false}) => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': Cookies.get('csrftoken'),
+            'X-CSRFToken': getCookie('csrftoken'),
           },
           mode: 'cors',
           body: JSON.stringify({source:e.target.result})
