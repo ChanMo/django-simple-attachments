@@ -62,11 +62,12 @@ const ImageInfo = ({img, onDelete}) => {
       return
     }
     let headers = {
-        'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken'),
     }
-    if(process.env.STORYBOOK) {
-      headers['Authorization'] = 'Basic ' + btoa("chen:mdian1927")
-    }
+    //if(process.env.STORYBOOK) {
+    //  headers['Authorization'] = 'Basic ' + btoa("chen:mdian1927")
+    //}
     fetch(`${host}/api/attachments/${img.id}/`, {
       method: 'patch',
       headers: headers,
@@ -84,7 +85,8 @@ const ImageInfo = ({img, onDelete}) => {
   // 删除
   const handleDelete = () => {
     let headers = {
-        'Content-Type': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken'),
     }
     if(process.env.STORYBOOK) {
       headers['Authorization'] = 'Basic ' + btoa("chen:mdian1927")

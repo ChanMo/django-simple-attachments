@@ -4,3 +4,6 @@ from django.utils.translation import gettext_lazy as _
 class AttachmentsConfig(AppConfig):
     name = 'attachments'
     verbose_name = _('attachments')
+
+    def ready(self):
+        import attachments.receivers

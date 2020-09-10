@@ -39,13 +39,13 @@ const useStyles = makeStyles(theme => ({
     width: 320,
     maxWidth: 320,
     height: '100%',
-    overflowY: 'auto',
+    overflowY: 'scroll',
   }
 }))
 
 const host = process.env.STORYBOOK ? process.env.API : ''
 
-const ImageGrid = ({onChoice, values=''}) => {
+const ImageGrid = ({onChoice, onDelete, values=''}) => {
   const classes = useStyles()
   const [data, setData] = useState({count:0, results:[]})
   const [active, setActive] = useState({})
@@ -91,6 +91,7 @@ const ImageGrid = ({onChoice, values=''}) => {
   const handleDelete = (img) => {
     setData({...data, results:data.results.filter(i=>i.id !== img.id)})
     setActive({})
+    onDelete(img.source)
   }
 
   return (

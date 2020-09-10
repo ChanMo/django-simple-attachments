@@ -61,6 +61,15 @@ const MultipleImage = (props) => {
     setOpen(false)
   }
 
+  const handleDelete = (img) => {
+    if(tmp.indexOf(img) > -1) {
+      setTmp(tmp.filter(i => i !== img))
+    }
+    if(value.indexOf(img) > -1) {
+      setValue(value.filter(i => i !== img))
+    }
+  }
+
   return (
     <React.Fragment>
       <SortableGrid
@@ -86,6 +95,7 @@ const MultipleImage = (props) => {
         onSubmit={handleSubmit}
         onClose={handleClose}
         onChoice={handleChoice}
+        onDelete={handleDelete}
         tmp={tmp}
         multiple
       />

@@ -35,6 +35,15 @@ const ImagePicker = (props) => {
     setOpen(false)
   }
 
+  const handleDelete = (img) => {
+    if(img === tmp) {
+      setTmp(null)
+    }
+    if(img === value) {
+      setValue('')
+    }
+  }
+
   return (
     <React.Fragment>
       {value && <img src={`${host}${value}`} alt='img' style={{maxHeight:220,display:'block',marginBottom:8}} />}
@@ -57,6 +66,7 @@ const ImagePicker = (props) => {
         onClose={handleClose}
         onSubmit={handleSubmit}
         onChoice={handleChoice}
+        onDelete={handleDelete}
         tmp={tmp}
       />
     </React.Fragment>

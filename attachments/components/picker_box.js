@@ -36,7 +36,7 @@ TabPanel.propTypes = {
 };
 
 
-const PickerBox = ({open, onSubmit, onClose, tmp='', onChoice, multiple=false}) => {
+const PickerBox = ({open, onSubmit, onClose, tmp='', onChoice, onDelete, multiple=false}) => {
   const [mode, setMode] = useState(0)
 
   return (
@@ -54,7 +54,11 @@ const PickerBox = ({open, onSubmit, onClose, tmp='', onChoice, multiple=false}) 
           <Tab label="上传" id="image-picker-tab1"></Tab>
         </Tabs>
         <TabPanel value={mode} index={0} style={{flex:1,overflowY:'hidden'}}>
-          <ImageGrid values={tmp} onChoice={onChoice} />
+          <ImageGrid
+            values={tmp}
+            onChoice={onChoice}
+            onDelete={onDelete}
+          />
         </TabPanel>
         <TabPanel value={mode} index={1}>
           <UploadBox onChoice={onChoice} multiple={multiple} />
