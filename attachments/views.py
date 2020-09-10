@@ -2,6 +2,7 @@ import logging
 from django.core.files.images import ImageFile
 from django.http import HttpResponse, HttpResponseNotFound
 
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.decorators import api_view
@@ -16,8 +17,17 @@ from .serializers import *
 logger = logging.getLogger(__name__)
 
 class AttachmentViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
     queryset = Attachment.objects.all()
     serializer_class = AttachmentSerializer
+
+    def get_permissions(self):
+        " 上传权限开放, 其他权限仅限Admin "
+        if self.action in ['create', 'list']:
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
 
     def get_queryset(self):
         from django.db.models import Q

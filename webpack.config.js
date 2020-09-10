@@ -1,5 +1,4 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -10,9 +9,6 @@ module.exports = {
     path: path.resolve('./attachments/static/attachments/'),
     filename: '[name].js'
   },
-  plugins: [
-    //new CleanWebpackPlugin(['./static/dashboards/'])
-  ],
   module: {
     rules: [
       {test:/\.js$/, exclude:/node_modules/, use:{
@@ -23,4 +19,8 @@ module.exports = {
       }}
     ]
   },
+  // Useful for debugging.
+  devtool: 'source-map',
+  // By default webpack logs warnings if the bundle is bigger than 200kb.
+  performance: { hints: false }
 }

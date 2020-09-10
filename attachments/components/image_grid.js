@@ -88,6 +88,11 @@ const ImageGrid = ({onChoice, values=''}) => {
     return false
   }
 
+  const handleDelete = (img) => {
+    setData({...data, results:data.results.filter(i=>i.id !== img.id)})
+    setActive({})
+  }
+
   return (
       <div className={classes.root}>
         <div className={classes.main}>
@@ -98,7 +103,7 @@ const ImageGrid = ({onChoice, values=''}) => {
           <TagsBar
             onSubmit={(value)=>setSearch(value)}
           />
-          {data.count ? (
+          {data.results.length > 0 ? (
             <>
               <div className={classes.grid}>
                 {data.results.map(row => (
@@ -132,7 +137,10 @@ const ImageGrid = ({onChoice, values=''}) => {
           )}
         </div>
         <div className={classes.info}>
-          <ImageInfo img={active} />
+          <ImageInfo
+            img={active}
+            onDelete={handleDelete}
+          />
         </div>
       </div>
   )

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack --watch --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "watch": "webpack --watch",
+    "build": "webpack",
     "storybook": "start-storybook -p 6006"
   },
   "repository": {
@@ -34,7 +34,6 @@
     "@storybook/react": "^5.3.19",
     "babel-loader": "^8.1.0",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-merge": "^4.2.2"
+    "webpack-cli": "^3.3.12"
   }
 }

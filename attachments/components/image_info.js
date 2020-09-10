@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Snackbar from '@material-ui/core/Snackbar'
 import { makeStyles } from '@material-ui/core/styles'
+import DeleteButton from './delete_button.js'
 import { getCookie } from './cookies.js'
 
 const host = process.env.STORYBOOK ? process.env.API : ''
@@ -14,16 +15,23 @@ const useStyles = makeStyles(theme => ({
   },
   img: {
     maxWidth: '100%',
+  },
+  button: {
+    marginTop: theme.spacing(2)
   }
 }))
 
-const ImageInfo = ({img}) => {
+const ImageInfo = ({img, onDelete}) => {
   const classes = useStyles()
+  const [message, setMessage] = useState('已保存')
   const [open, setOpen] = useState(false)
   const [old, setOld] = useState({})
   const [data, setData] = useState({})
 
   useEffect(()=>{
+    if(!img.id) {
+      return
+    }
     let headers = {
       'X-CSRFToken': getCookie('csrftoken'),
     }
@@ -65,11 +73,30 @@ const ImageInfo = ({img}) => {
       body: JSON.stringify(data)
     }).then(res => res.json()).then(res => {
       setOpen(true)
+      setMessage('已保存')
       setOld(data)
       console.log(res)
     }).catch(err => {
       console.log(err)
     })
+  }
+
+  // 删除
+  const handleDelete = () => {
+    let headers = {
+        'Content-Type': 'application/json',
+    }
+    if(process.env.STORYBOOK) {
+      headers['Authorization'] = 'Basic ' + btoa("chen:mdian1927")
+    }
+    fetch(`${host}/api/attachments/${img.id}/`, {
+      method: 'delete',
+      headers: headers
+    }).then(res => {
+      setOpen(true)
+      setMessage('已删除')
+      onDelete(img)
+    }).catch(err => console.log(err))
   }
 
   if(Object.keys(img).length <=0) {
@@ -80,7 +107,7 @@ const ImageInfo = ({img}) => {
     <div className={classes.root}>
       <Snackbar
         open={open}
-        message="已保存"
+        message={message}
         onClose={()=>setOpen(false)}
         autoHideDuration={2000}
       />
@@ -135,6 +162,10 @@ const ImageInfo = ({img}) => {
         onBlur={handleSubmit}
         helperText={'使用英文逗号分割多个标签'}
       />
+      <DeleteButton
+        onConfirm={handleDelete}
+        className={classes.button}
+        size="small" />
     </div>
   )
 }

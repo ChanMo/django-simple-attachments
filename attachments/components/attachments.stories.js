@@ -9,6 +9,7 @@ import TagsBar from './tags_bar.js'
 import SearchBar from './search_bar.js'
 import ImageInfo from './image_info.js'
 import ImageBox from './image_box.js'
+import DeleteButton from './delete_button.js'
 
 export default { title: 'Attachments' }
 
@@ -34,7 +35,7 @@ export const uploadBox = () => (
 )
 
 export const imageGrid = () => (
-  <ImageGrid />
+  <ImageGrid onChoice={()=>null} />
 )
 
 export const searchBar = () => (
@@ -98,5 +99,11 @@ export const imageBox = () => (
       selected
       onChoice={()=>null}
     />
+  </div>
+)
+
+export const deleteButton = () => (
+  <div>
+    <DeleteButton open={true} onClose={()=>null} onConfirm={()=>null} />
   </div>
 )
