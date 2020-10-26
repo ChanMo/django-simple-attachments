@@ -21,8 +21,8 @@ const ImagePicker = (props) => {
   const [mode, setMode] = useState(0)
 
   const handleChoice = (value) => {
-    //setOpen(false)
-    //setValue(value)
+    setOpen(false)
+    setValue(value)
     setTmp(value)
   }
 

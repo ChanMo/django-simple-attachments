@@ -10,3 +10,5 @@ drf-yasg
 django-taggit
 djangorestframework-simplejwt
 django-cors-headers
+sorl-thumbnail
+django-extra-fields
